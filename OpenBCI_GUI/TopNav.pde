@@ -35,6 +35,7 @@ class TopNav {
 
     public Button layoutButton;
     public Button settingsButton;
+    public Button notesButton;
 
     public LayoutSelector layoutSelector;
     public TutorialSelector tutorialSelector;
@@ -93,6 +94,7 @@ class TopNav {
 
             //Appears at Top Right SubNav while in a Session
             createLayoutButton("Layout", width - 3 - 60, SUBNAV_BUT_Y, 60, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
+            createNotesButton("Notes", (int)layoutButton.getPosition()[0] - SUBNAV_BUT_W - PAD_3, SUBNAV_BUT_Y, SUBNAV_BUT_W, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
             secondaryNavInit = true;
         }
 
@@ -173,6 +175,7 @@ class TopNav {
             toggleDataStreamingButton.setVisible(isSession);
             filtersButton.setVisible(isSession);
             layoutButton.setVisible(isSession);
+            notesButton.setVisible(isSession);
            
         }
         if (smoothingButton != null) {
@@ -209,6 +212,7 @@ class TopNav {
 
             layoutButton.setPosition(width - 3 - layoutButton.getWidth(), SUBNAV_BUT_Y);
             settingsButton.setPosition(width - (settingsButton.getWidth()*2) + PAD_3, SUBNAV_BUT_Y);
+            notesButton.setPosition(settingsButton.getPosition()[0] - notesButton.getWidth() - PAD_3, SUBNAV_BUT_Y);
             //Make sure to re-position UI in selector boxes
             layoutSelector.screenResized();
         }
@@ -414,6 +418,34 @@ class TopNav {
             }
         });
         issuesButton.setDescription("If you have suggestions or want to share a bug you've found, please create an issue on the GUI's Github repo!");
+    }
+
+    private void createNotesButton(String text, int _x, int _y, int _w, int _h, PFont font, int _fontSize, color _bg, color _textColor) {
+        final String helpText = "Add notes for the session.";
+        notesButton = createTNButton("notesButton", text, _x, _y, _w, _h, font, _fontSize, _bg, _textColor);
+        notesButton.onRelease(new CallbackListener() {
+            public void controlEvent(CallbackEvent theEvent) {
+                String sessionFolder = settings.getSessionPath();
+                Path filePath = Paths.get(sessionFolder, "notes.txt");
+
+                try {
+                    File file = new File(filePath.toString());
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ProcessBuilder processBuilder = new ProcessBuilder("open", "-e", filePath.toString());
+                processBuilder.directory(new File(sessionFolder.toString()));
+                try {
+                    Process process = processBuilder.start();
+                    int exitCode = process.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        notesButton.setDescription(helpText);
     }
 
     private void createShopButton(String text, int _x, int _y, int _w, int _h, PFont font, int _fontSize, color _bg, color _textColor) {
