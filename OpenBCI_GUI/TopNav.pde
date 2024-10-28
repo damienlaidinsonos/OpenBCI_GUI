@@ -426,6 +426,11 @@ class TopNav {
         notesButton.onRelease(new CallbackListener() {
             public void controlEvent(CallbackEvent theEvent) {
                 String sessionFolder = settings.getSessionPath();
+                if (sessionFolder.isEmpty()) {
+                    new PopupMessage("Session not started.", "Please start a session before attempting to take notes.");
+                    return;
+                }
+
                 Path filePath = Paths.get(sessionFolder, "notes.txt");
 
                 try {
