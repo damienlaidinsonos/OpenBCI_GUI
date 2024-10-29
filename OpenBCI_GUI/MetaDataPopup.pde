@@ -27,6 +27,17 @@ class MetadataPopup extends PApplet {
         textSize(18);
         this.isVisible = true;
 
+        Table layout = loadTable("metadataLayout.csv", "header");
+        for(TableRow row : layout.rows()) {
+            println("UIType " + row.getString("UIType"));
+            println("Label " + row.getString("Label"));
+            println("EnumType " + row.getString("EnumType"));
+            println("X " + row.getString("X"));
+            println("Y " + row.getString("Y"));
+            println("Width " + row.getString("Width"));
+            println("Height " + row.getString("Height"));
+        }
+
         this.cp5 = new ControlP5(this);
         this.signalTypeDropDown = createDropDown(SignalType.getItems(), "SignalType", 100.0, 100.0, 200, 100);
 
@@ -61,7 +72,7 @@ class MetadataPopup extends PApplet {
             .setSize(width, height)
             .setVisible(true)
             .setBarHeight(20)
-            .setItemHeight(20)
+            .setItemHeight(40)
             ;
 
         for (Map.Entry<MetadataEnumInterface, String> entry : items.entrySet()) {

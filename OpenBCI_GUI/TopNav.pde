@@ -433,10 +433,8 @@ class TopNav {
         metadataButton.onRelease(new CallbackListener() {
             public synchronized void controlEvent(CallbackEvent theEvent) {
                 if (metadataPopup == null) {
-                    println("metadataPopup is null");
                     metadataPopup = new MetadataPopup();
                 } else {
-                    println("metadataPopup is not null. Reusing previous instance.");
                     if (metadataPopup.isVisible) {
                         metadataPopup.hide();
                     } else {
