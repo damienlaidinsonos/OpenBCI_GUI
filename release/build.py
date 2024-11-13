@@ -96,11 +96,18 @@ def delete_source_directory():
     else:
         print ("Successfully deleted source directory.")
 
+def copy_icons_to_app():
+    flavor = flavors[LOCAL_OS]
+    src = os.path.join(os.getcwd(), "OpenBCI_GUI", "sketch.icns")
+    dest = os.path.join(os.getcwd(), flavor, "OpenBCI_GUI.app", "Contents", "Resources", "sketch.icns")
+    shutil.copy(src, dest)
+
 def main ():
     clean()
     update_timestamp()
     build()
     delete_source_directory()
+    copy_icons_to_app()
 
 if __name__ == "__main__":
     main ()
