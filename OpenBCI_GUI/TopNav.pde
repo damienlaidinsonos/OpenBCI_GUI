@@ -433,7 +433,12 @@ class TopNav {
         metadataButton.onRelease(new CallbackListener() {
             public synchronized void controlEvent(CallbackEvent theEvent) {
                 if (metadataPopup == null) {
-                    metadataPopup = new MetadataPopup();
+                    String sessionFolder = settings.getSessionPath();
+                    if (sessionFolder.isEmpty()) {
+                        new PopupMessage("Session not started.", "Please start a session before attempting to save metadata.");
+                        return;
+                    }
+                    metadataPopup = new MetadataPopup(sketchPath("data"), sessionFolder);
                 } else {
                     if (metadataPopup.isVisible) {
                         metadataPopup.hide();
