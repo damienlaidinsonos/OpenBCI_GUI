@@ -41,34 +41,43 @@ class MetadataPopup extends PApplet {
         this.cp5 = new ControlP5(this);
         this.font = createFont("Georgia", 15);
 
-        Path fieldsFilePath = Paths.get(this.dataPath, metadataFieldsFileName);
-        JSONObject metadataFields = loadJSONObject(fieldsFilePath.toString());
+        JSONObject metadataFields = loadJSONObject(metadataFieldsFileName);
+        // Attemps to load from a prod env
         if (metadataFields == null) {
-            new PopupMessage("File not found.", "Could not load " + fieldsFilePath.toString());
-            return;
+            final Path fieldsFilePath = Paths.get(this.dataPath, metadataFieldsFileName);
+            metadataFields = loadJSONObject(fieldsFilePath.toString());
+            // If the prod env failed, attempt as a dev env
+            if (metadataFields == null) {
+                new PopupMessage("File not found.", "Could not load " + fieldsFilePath.toString());
+                return;
+            }
         }
 
-        Path layoutFilePath = Paths.get(this.dataPath, metadataLayoutFileName);
-        Table layout = loadTable(layoutFilePath.toString(), "header");
-        if (layout != null) {
-            for(TableRow row : layout.rows()) {
-                String id = row.getString("ID");
-                String uiType = row.getString("UIType");
-                String label = row.getString("Label");
-                float x = row.getFloat("X");
-                float y = row.getFloat("Y");
-                int w = row.getInt("Width");
-                int h = row.getInt("Height");
-                if (uiType.equals("dropdown")) {
-                    JSONArray values = metadataFields.getJSONArray(label);
-                    ScrollableList dropdown = createDropDown(id, values, x, y, w, h);
-                    this.dropdowns.put(label, dropdown);
-                } else if (uiType.equals("textfield")) {
-                    createTextLabel(id, label, x, y, w, h);
-                }
+        Table layout = loadTable(metadataLayoutFileName, "header");
+        if (layout == null) {
+            final Path layoutFilePath = Paths.get(this.dataPath, metadataLayoutFileName);
+            layout = loadTable(layoutFilePath.toString(), "header");
+            if (layout == null) {
+                new PopupMessage("File not found.", "Could not load " + layoutFilePath.toString());
+                return;
             }
-        } else {
-            new PopupMessage("File not found.", "Could not load " + layoutFilePath.toString());
+        }
+
+        for(TableRow row : layout.rows()) {
+            String id = row.getString("ID");
+            String uiType = row.getString("UIType");
+            String label = row.getString("Label");
+            float x = row.getFloat("X");
+            float y = row.getFloat("Y");
+            int w = row.getInt("Width");
+            int h = row.getInt("Height");
+            if (uiType.equals("dropdown")) {
+                JSONArray values = metadataFields.getJSONArray(label);
+                ScrollableList dropdown = createDropDown(id, values, x, y, w, h);
+                this.dropdowns.put(label, dropdown);
+            } else if (uiType.equals("textfield")) {
+                createTextLabel(id, label, x, y, w, h);
+            }
         }
 
         final int buttonLen = 100;

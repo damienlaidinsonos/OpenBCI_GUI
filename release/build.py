@@ -102,12 +102,20 @@ def copy_icons_to_app():
     dest = os.path.join(os.getcwd(), flavor, "OpenBCI_GUI.app", "Contents", "Resources", "sketch.icns")
     shutil.copy(src, dest)
 
+def rename_app():
+    flavor = flavors[LOCAL_OS]
+    src = os.path.join(os.getcwd(), flavor, "OpenBCI_GUI.app")
+    dest = os.path.join(os.getcwd(), flavor, "SonosOpenBCI_GUI.app")
+    shutil.copytree(src, dest)
+    shutil.rmtree(src);
+
 def main ():
     clean()
     update_timestamp()
     build()
     delete_source_directory()
     copy_icons_to_app()
+    rename_app()
 
 if __name__ == "__main__":
     main ()

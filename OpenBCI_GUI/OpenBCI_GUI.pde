@@ -63,11 +63,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //------------------------------------------------------------------------
 //Used to check GUI version in TopNav.pde and displayed on the splash screen on startup
 String localGUIVersionString = "v6.0.0-beta.1";
-<<<<<<< HEAD
-String localGUIVersionDate = "2024/10/29 15:49:10";
-=======
-String localGUIVersionDate = "2024/11/13 13:32:11";
->>>>>>> 62b23b2b (Fixed build icons)
+String localGUIVersionDate = "2024/11/13 15:09:26";
 String guiLatestVersionGithubAPI = "https://api.github.com/repos/OpenBCI/OpenBCI_GUI/releases/latest";
 String guiLatestReleaseLocation = "https://github.com/OpenBCI/OpenBCI_GUI/releases/latest";
 Boolean guiIsUpToDate;
