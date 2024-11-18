@@ -427,7 +427,8 @@ class TopNav {
             public void controlEvent(CallbackEvent theEvent) {
                 String sessionFolder = settings.getSessionPath();
                 if (sessionFolder.isEmpty()) {
-                    new PopupMessage("Session not started.", "Please start a session before attempting to take notes.");
+                    final Boolean closeOnFocusLost = true;
+                    new PopupMessage("Session not started.", "Please start a session before attempting to take notes.", closeOnFocusLost);
                     return;
                 }
 
