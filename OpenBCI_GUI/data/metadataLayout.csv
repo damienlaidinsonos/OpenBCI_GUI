@@ -1,5 +1,5 @@
 ID,UIType,Label,X,Y,Width,Height
 0,textfield,Protocol :,25,25,75,25
 1,dropdown,protocol,125,25,100,25
-2,textfield,Version :,25,75,75,25
-3,dropdown,version,125,75,100,25
+2,textfield,Connection :,25,75,75,25
+3,dropdown,connection,125,75,100,25
