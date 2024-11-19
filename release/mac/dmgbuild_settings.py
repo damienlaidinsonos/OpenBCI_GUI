@@ -207,7 +207,7 @@ license = {
         # RTF (in which case it must start "{\rtf1"), or a path to a file
         # containing the license text.  If you're using RTF,
         # watch out for Python escaping (or read it from a file).
-        "en_US": b"""
+        "en_US": """
             The OpenBCI GUI is licensed under the MIT License.
 
             Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -246,12 +246,12 @@ license = {
         # You don't need to specify them for those languages; if you fail to
         # specify them for some other language, English will be used instead.
         "en_US": (
-            b"English",
-            b"Agree",
-            b"Disagree",
-            b"Print",
-            b"Save",
-            b'Do you agree to the terms of the MIT license? Press "Agree" or "Disagree".',
+            "English",
+            "Agree",
+            "Disagree",
+            "Print",
+            "Save",
+            'Do you agree to the terms of the MIT license? Press "Agree" or "Disagree".',
         ),
     },
 }

@@ -1,5 +1,7 @@
 import java.awt.Frame;
 import processing.awt.PSurfaceAWT;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 // Instantiate this class to show a popup message
 
@@ -17,6 +19,7 @@ class PopupMessage extends PApplet implements Runnable {
     private String headerMessage = "Error";
     private String buttonMessage = "OK";
     private String buttonLink = null;
+    private Boolean closeOnFocusLost = false;
 
     private color headerColor = OPENBCI_BLUE;
     private color buttonColor = OPENBCI_BLUE;
@@ -29,6 +32,17 @@ class PopupMessage extends PApplet implements Runnable {
 
         headerMessage = header;
         message = msg;
+
+        Thread t = new Thread(this);
+        t.start();        
+    }
+
+    public PopupMessage(String header, String msg, Boolean closeOnFocusLost) {
+        super();
+
+        headerMessage = header;
+        message = msg;
+        this.closeOnFocusLost = closeOnFocusLost;
 
         Thread t = new Thread(this);
         t.start();        
@@ -65,6 +79,20 @@ class PopupMessage extends PApplet implements Runnable {
         Frame frame = ( (PSurfaceAWT.SmoothCanvas) ((PSurfaceAWT)surface).getNative()).getFrame();
         frame.toFront();
         frame.requestFocus();
+
+        if (this.closeOnFocusLost) {
+            // Add a focus listener to the sketch window
+            frame.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {}
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    // Simulate a button pressed to re-use the logic that is in place to properly close the popup
+                    onButtonPressed();
+                }
+            });
+        }
 
         cp5 = new ControlP5(this);
 
