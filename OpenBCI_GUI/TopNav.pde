@@ -435,9 +435,12 @@ class TopNav {
                 if (metadataPopup == null) {
                     String sessionFolder = settings.getSessionPath();
                     if (sessionFolder.isEmpty()) {
-                        new PopupMessage("Session not started.", "Please start a session before attempting to save metadata.");
+                        final Boolean closeOnFocusLost = true;
+                        new PopupMessage("Session not started.", "Please start a session before attempting to save metadata.", closeOnFocusLost);
                         return;
                     }
+                    // Need to pass sketch specific paths and data because we create a new sketch
+                    // which doesn't inherit from the parent sketch
                     metadataPopup = new MetadataPopup(sketchPath("data"), sessionFolder);
                 } else {
                     if (metadataPopup.isVisible) {
