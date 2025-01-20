@@ -11,6 +11,7 @@
 import java.awt.Desktop;
 import java.net.*;
 import java.nio.file.*;
+import javax.swing.JFrame;
 
 class TopNav {
 
@@ -35,6 +36,7 @@ class TopNav {
 
     public Button layoutButton;
     public Button settingsButton;
+    public Button metadataButton;
     public Button notesButton;
 
     public LayoutSelector layoutSelector;
@@ -54,6 +56,8 @@ class TopNav {
     private final int TOPNAV_BUT_H = SUBNAV_BUT_H;
 
     private boolean topNavDropdownMenuIsOpen = false;
+
+    public MetadataPopup metadataPopup = null;
 
     TopNav() {
         int controlPanel_W = 256;
@@ -94,7 +98,8 @@ class TopNav {
 
             //Appears at Top Right SubNav while in a Session
             createLayoutButton("Layout", width - 3 - 60, SUBNAV_BUT_Y, 60, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
-            createNotesButton("Notes", (int)layoutButton.getPosition()[0] - SUBNAV_BUT_W - PAD_3, SUBNAV_BUT_Y, SUBNAV_BUT_W, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
+            createMetadataButton("Metadata", (int)layoutButton.getPosition()[0] - SUBNAV_BUT_W - PAD_3, SUBNAV_BUT_Y, SUBNAV_BUT_W, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
+            createNotesButton("Notes", (int)metadataButton.getPosition()[0] - SUBNAV_BUT_W - PAD_3, SUBNAV_BUT_Y, SUBNAV_BUT_W, SUBNAV_BUT_H, h4, 14, SUBNAV_LIGHTBLUE, WHITE);
             secondaryNavInit = true;
         }
 
@@ -176,6 +181,7 @@ class TopNav {
             filtersButton.setVisible(isSession);
             layoutButton.setVisible(isSession);
             notesButton.setVisible(isSession);
+            metadataButton.setVisible(isSession);
            
         }
         if (smoothingButton != null) {
@@ -212,7 +218,8 @@ class TopNav {
 
             layoutButton.setPosition(width - 3 - layoutButton.getWidth(), SUBNAV_BUT_Y);
             settingsButton.setPosition(width - (settingsButton.getWidth()*2) + PAD_3, SUBNAV_BUT_Y);
-            notesButton.setPosition(settingsButton.getPosition()[0] - notesButton.getWidth() - PAD_3, SUBNAV_BUT_Y);
+            metadataButton.setPosition(settingsButton.getPosition()[0] - metadataButton.getWidth() - PAD_3, SUBNAV_BUT_Y);
+            notesButton.setPosition(metadataButton.getPosition()[0] - notesButton.getWidth() - PAD_3, SUBNAV_BUT_Y);
             //Make sure to re-position UI in selector boxes
             layoutSelector.screenResized();
         }
@@ -418,6 +425,33 @@ class TopNav {
             }
         });
         issuesButton.setDescription("If you have suggestions or want to share a bug you've found, please create an issue on the GUI's Github repo!");
+    }
+
+    private void createMetadataButton(String text, int _x, int _y, int _w, int _h, PFont font, int _fontSize, color _bg, color _textColor) {
+        final String helpText = "Add metadata to the session's recording.";
+        metadataButton = createTNButton("metadataButton", text, _x, _y, _w, _h, font, _fontSize, _bg, _textColor);
+        metadataButton.onRelease(new CallbackListener() {
+            public synchronized void controlEvent(CallbackEvent theEvent) {
+                if (metadataPopup == null) {
+                    String sessionFolder = settings.getSessionPath();
+                    if (sessionFolder.isEmpty()) {
+                        final Boolean closeOnFocusLost = true;
+                        new PopupMessage("Session not started.", "Please start a session before attempting to save metadata.", closeOnFocusLost);
+                        return;
+                    }
+                    // Need to pass sketch specific paths and data because we create a new sketch
+                    // which doesn't inherit from the parent sketch
+                    metadataPopup = new MetadataPopup(sketchPath("data"), sessionFolder);
+                } else {
+                    if (metadataPopup.isVisible) {
+                        metadataPopup.hide();
+                    } else {
+                        metadataPopup.show();
+                    }
+                }
+            }
+        });
+        metadataButton.setDescription(helpText);
     }
 
     private void createNotesButton(String text, int _x, int _y, int _w, int _h, PFont font, int _fontSize, color _bg, color _textColor) {

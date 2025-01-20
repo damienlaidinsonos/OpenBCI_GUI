@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //------------------------------------------------------------------------
 //Used to check GUI version in TopNav.pde and displayed on the splash screen on startup
 String localGUIVersionString = "v6.0.0-beta.1";
-String localGUIVersionDate = "2024/10/29 15:49:10";
+String localGUIVersionDate = "2024/11/19 16:24:45";
 String guiLatestVersionGithubAPI = "https://api.github.com/repos/OpenBCI/OpenBCI_GUI/releases/latest";
 String guiLatestReleaseLocation = "https://github.com/OpenBCI/OpenBCI_GUI/releases/latest";
 Boolean guiIsUpToDate;
@@ -966,7 +966,7 @@ void systemDraw() { //for drawing to the screen
     }
 
     //Display GUI version and FPS in the title bar of the app
-    surface.setTitle("OpenBCI GUI " + localGUIVersionString + " - " + localGUIVersionDate + " - " + int(frameRate) + " fps");
+    surface.setTitle("Sonos OpenBCI GUI " + localGUIVersionString + " - " + localGUIVersionDate + " - " + int(frameRate) + " fps");
 }
 
 void requestReinit() {
@@ -1015,7 +1015,7 @@ void introAnimation() {
         textLeading(24);
         fill(31, 69, 110, transparency);
         textAlign(CENTER, CENTER);
-        String displayVersion = "OpenBCI GUI " + localGUIVersionString;
+        String displayVersion = "Sonos OpenBCI GUI " + localGUIVersionString;
         text(displayVersion, width/2, height/2 + width/9);
         text(localGUIVersionDate, width/2, height/2 + ((width/8) * 1.125));
     }
